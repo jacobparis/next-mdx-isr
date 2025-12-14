@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og"
 import { getAllPosts } from "@/lib/mdx"
 
-export const runtime = "edge"
 export const alt = "Next MDX Content Site"
 export const size = {
   width: 1200,
