@@ -1,5 +1,3 @@
-"use cache"
-
 import { ImageResponse } from "next/og"
 import { getAllPosts } from "@/lib/mdx"
 
@@ -11,6 +9,8 @@ export const size = {
 export const contentType = "image/png"
 
 export default async function Image() {
+"use cache"
+
   const posts = await getAllPosts()
   const recentPosts = posts.slice(0, 3)
 
