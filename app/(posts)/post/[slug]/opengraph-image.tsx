@@ -1,5 +1,3 @@
-"use cache"
-
 import { ImageResponse } from "next/og"
 import { getPostBySlug } from "@/lib/mdx"
 
@@ -11,6 +9,7 @@ export const size = {
 export const contentType = "image/png"
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
+  "use cache"
   const { slug } = await params
   const post = await getPostBySlug(slug)
 
