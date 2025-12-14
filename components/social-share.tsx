@@ -1,10 +1,7 @@
 import { headers } from "next/headers"
 
 export async function SocialShare({ title, slug }: { title: string; slug: string }) {
-  const headersList = await headers()
-  const host = headersList.get("host") || ""
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https"
-  const url = `${protocol}://${host}/post/${slug}`
+  const url = `https://next-mdx-content-template.vercel.app/post/${slug}`
 
   const encodedTitle = encodeURIComponent(title)
   const encodedUrl = encodeURIComponent(url)
