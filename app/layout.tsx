@@ -1,11 +1,16 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+
 import { Analytics } from "@vercel/analytics/next"
+import Link from "next/link"
 import "./globals.css"
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
+import { Geist, Geist_Mono, Geist as V0_Font_Geist, Geist_Mono as V0_Font_Geist_Mono, Source_Serif_4 as V0_Font_Source_Serif_4 } from 'next/font/google'
+
+// Initialize fonts
+const _geist = V0_Font_Geist({ subsets: ['latin'], weight: ["100","200","300","400","500","600","700","800","900"] })
+const _geistMono = V0_Font_Geist_Mono({ subsets: ['latin'], weight: ["100","200","300","400","500","600","700","800","900"] })
+const _sourceSerif_4 = V0_Font_Source_Serif_4({ subsets: ['latin'], weight: ["200","300","400","500","600","700","800","900"] })
 
 export const metadata: Metadata = {
   title: "Minimal Blog",
@@ -21,7 +26,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased flex flex-col min-h-screen`}>
+        <header className="border-b border-border/50">
+          <div className="max-w-4xl mx-auto px-6 py-4">
+            <div className="flex items-center gap-3 text-xl">
+              <Link href="/" className="font-bold text-foreground hover:opacity-70 transition-opacity">
+                Blog
+              </Link>
+              <span className="text-muted-foreground">|</span>
+              <span className="font-bold text-accent">Engineering</span>
+            </div>
+          </div>
+        </header>
+
         <div className="flex-1">{children}</div>
+
         <footer className="border-t border-border/50 mt-16">
           <div className="max-w-4xl mx-auto px-6 text-center py-3">
             <p className="text-sm text-muted-foreground">

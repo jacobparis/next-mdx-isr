@@ -1,29 +1,96 @@
+"use client"
+
 import type React from "react"
 import type { ComponentPropsWithoutRef } from "react"
+import { Button } from "@/components/ui/button"
 
 // Custom MDX components that can be used in blog posts
 export const MdxComponents = {
-  h1: (props: ComponentPropsWithoutRef<"h1">) => <h1 className="text-4xl font-bold mt-6 text-balance" {...props} />,
-  h2: (props: ComponentPropsWithoutRef<"h2">) => <h2 className="text-3xl font-bold mt-12 text-balance" {...props} />,
-  h3: (props: ComponentPropsWithoutRef<"h3">) => <h3 className="text-2xl font-semibold mt-8 text-balance" {...props} />,
-  p: (props: ComponentPropsWithoutRef<"p">) => <p className="leading-relaxed mt-4 text-pretty" {...props} />,
-  a: (props: ComponentPropsWithoutRef<"a">) => (
-    <a className="underline decoration-muted-foreground hover:decoration-foreground transition-colors" {...props} />
+  h1: (props: ComponentPropsWithoutRef<"h1">) => (
+    <h1 className="text-4xl font-semibold mt-8 mb-2 tracking-tight scroll-mt-20 text-balance" {...props} />
   ),
-  ul: (props: ComponentPropsWithoutRef<"ul">) => <ul className="list-disc list-inside mt-4 space-y-2" {...props} />,
-  ol: (props: ComponentPropsWithoutRef<"ol">) => <ol className="list-decimal list-inside mt-4 space-y-2" {...props} />,
+  h2: (props: ComponentPropsWithoutRef<"h2">) => (
+    <h2 className="text-2xl font-semibold mt-8 mb-2 tracking-tight scroll-mt-20" {...props} />
+  ),
+  h3: (props: ComponentPropsWithoutRef<"h3">) => (
+    <h3 className="text-xl font-semibold mt-6 mb-2 tracking-tight scroll-mt-20" {...props} />
+  ),
+  h4: (props: ComponentPropsWithoutRef<"h4">) => (
+    <h4 className="text-lg font-semibold mb-2 tracking-tight scroll-mt-20" {...props} />
+  ),
+  h5: (props: ComponentPropsWithoutRef<"h5">) => (
+    <h5 className="text-sm font-semibold mb-2 tracking-tight scroll-mt-20" {...props} />
+  ),
+  h6: (props: ComponentPropsWithoutRef<"h6">) => <h6 className="text-xs font-semibold mb-2 scroll-mt-20" {...props} />,
+  p: (props: ComponentPropsWithoutRef<"p">) => <p className="mt-4 text-base text-secondary leading-relaxed text-pretty" {...props} />,
+  a: (props: ComponentPropsWithoutRef<"a">) => (
+    <a
+      className="text-accent underline decoration-gray-400/50 underline-offset-2 transition-colors duration-200 hover:decoration-accent font-normal"
+      {...props}
+    />
+  ),
+  ul: (props: ComponentPropsWithoutRef<"ul">) => (
+    <ul className="list-disc pl-6 mt-6 space-y-2 [&_li::marker]:text-muted-foreground/80" {...props} />
+  ),
+  ol: (props: ComponentPropsWithoutRef<"ol">) => (
+    <ol className="list-decimal pl-6 mt-6 space-y-2 [&_li::marker]:text-muted-foreground/80" {...props} />
+  ),
+  li: (props: ComponentPropsWithoutRef<"li">) => <li className="text-base -ml-px pl-px" {...props} />,
   blockquote: (props: ComponentPropsWithoutRef<"blockquote">) => (
-    <blockquote className="border-l-4 border-muted-foreground pl-4 italic my-6 text-muted-foreground" {...props} />
+    <blockquote className="border-l-4 border-accent pl-6 my-6 not-italic" {...props} />
   ),
   code: (props: ComponentPropsWithoutRef<"code">) => (
-    <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props} />
+    <code
+      className="before:content-none after:content-none bg-muted px-1.5 py-0.5 rounded text-sm font-mono break-words"
+      {...props}
+    />
   ),
-  pre: (props: ComponentPropsWithoutRef<"pre">) => (
-    <pre className="bg-muted p-4 rounded-lg overflow-x-auto mt-4 text-sm" {...props} />
-  ),
+  pre: ({ children, ...props }: ComponentPropsWithoutRef<"pre">) => {
+    // Extract language from className if present
+    const codeElement = children as any
+    const className = codeElement?.props?.className || ""
+    const language = className.replace(/language-/, "").toUpperCase() || "CODE"
+
+    return (
+      <div className="max-w-full rounded border border-border mt-3">
+        <div className="flex items-center justify-between border-b border-border px-1">
+          <div className="py-3 px-2 text-xs font-medium leading-none opacity-60 text-foreground">{language} </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="p-1 size-7"
+            aria-label="Copy snippet to clipboard"
+            onClick={(e) => {
+              const code = e.currentTarget.parentElement?.nextElementSibling?.textContent
+              if (code) {
+                navigator.clipboard.writeText(code)
+              }
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="none"
+              className="stroke-muted-foreground"
+              viewBox="0 0 16 16"
+            >
+              <path d="M5.5 2h-2a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-2"></path>
+              <path d="M6.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"></path>
+            </svg>
+          </Button>
+        </div>
+        <pre
+          className="max-h-44 w-full overflow-auto whitespace-pre p-2 font-mono text-sm [&_code]:bg-transparent"
+          {...props}
+        >
+          {children}
+        </pre>
+      </div>
+    )
+  },
 }
 
-// Custom components for blog posts
 export function Callout({
   children,
   type = "info",
@@ -37,7 +104,7 @@ export function Callout({
     success: "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-900",
   }
 
-  return <div className={`border-l-4 p-4 my-6 rounded-r ${styles[type]}`}>{children}</div>
+  return <div className={`border-l-4 p-4 my-6 rounded-r [&>p:first-child]:mt-0 ${styles[type]}`}>{children}</div>
 }
 
 export function ImageGrid({ children }: { children: React.ReactNode }) {

@@ -9,28 +9,28 @@
 
   /* Clean black and white base colors */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.1 0 0);
+  --foreground: oklch(0.145 0 0);
 
   /* Muted text for descriptions */
-  --muted-foreground: oklch(0.45 0 0);
+  --muted-foreground: oklch(0.556 0 0);
 
   /* Subtle border */
-  --border: oklch(0.93 0 0);
+  --border: oklch(0.922 0 0);
 
   /* Design tokens for consistency */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.1 0 0);
+  --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.1 0 0);
-  --primary: oklch(0.1 0 0);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.1 0 0);
-  --muted: oklch(0.96 0 0);
-  --accent: rgb(104, 104, 104);
-  --accent-foreground: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: rgb(101, 101, 101);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --accent: rgb(45, 58, 201);
+  --accent-foreground: rgb(255, 255, 255);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -38,7 +38,7 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.5rem;
+  --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -47,28 +47,34 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --shadow-x: 0px;
+  --shadow-y: 1px;
+  --shadow-blur: 2px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.05;
+  --shadow-color: #000000;
 }
 
 .dark {
-  --background: oklch(0.15 0 0);
-  --foreground: oklch(0.99 0 0);
-  --card: oklch(0.145 0 0);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
+  --popover: oklch(0.269 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.22 0 0);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: var(--brand-orange);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.371 0 0);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.25 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -80,8 +86,14 @@
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.439 0 0);
+  --shadow-x: 0px;
+  --shadow-y: 1px;
+  --shadow-blur: 2px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.05;
+  --shadow-color: #000000;
 }
 
 @theme inline {
@@ -123,6 +135,33 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --font-serif: "Source Serif 4", "Source Serif 4 Fallback";
+  /* computed shadow variables below - do not modify */
+  --shadow-2xs: var(--shadow-x) var(--shadow-y)
+    color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-xs: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread)
+    color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-sm: var(--shadow-x) var(--shadow-y) calc(var(--shadow-blur) * 1.5) var(--shadow-spread)
+    color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-md: calc(var(--shadow-x) * 2) calc(var(--shadow-y) * 2) calc(var(--shadow-blur) * 3)
+    calc(var(--shadow-spread) - 1px)
+    color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-lg: calc(var(--shadow-x) * 4) calc(var(--shadow-y) * 4) calc(var(--shadow-blur) * 5)
+    calc(var(--shadow-spread) - 3px)
+    color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-xl: calc(var(--shadow-x) * 6) calc(var(--shadow-y) * 6) calc(var(--shadow-blur) * 7)
+    calc(var(--shadow-spread) - 5px)
+    color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-2xl: calc(var(--shadow-x) * 8) calc(var(--shadow-y) * 8) calc(max(0px, var(--shadow-blur) * 9 - 8px))
+    calc(var(--shadow-spread) - 12px)
+    color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 250%), transparent);
+  --shadow: var(--shadow-md);
+  --color-shadow-color: var(--shadow-color);
+  --shadow-opacity: var(--shadow-opacity);
+  --shadow-spread: var(--shadow-spread);
+  --shadow-blur: var(--shadow-blur);
+  --shadow-y: var(--shadow-y);
+  --shadow-x: var(--shadow-x);
 }
 
 @layer base {
@@ -139,17 +178,127 @@
   @apply text-foreground leading-relaxed;
 }
 
-/* Reduced all heading sizes and spacing */
+/* Implementing design mock styles for all MDX elements */
+
+/* List item alignment tweak */
+.prose li {
+  margin-left: -1px;
+  padding-left: 1px !important;
+}
+
+/* Blockquotes are not italic */
+.prose :where(blockquote):not(:where([class~="not-prose"] *)) {
+  @apply border-l-4 border-accent pl-6 my-6;
+  font-style: normal;
+}
+
+/* Headings with exact specs from design mock */
 .prose :where(h1):not(:where([class~="not-prose"] *)) {
-  @apply text-4xl font-bold tracking-tight mt-8 text-balance;
+  margin-bottom: 8px;
+  scroll-margin: 80px;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.033em;
+  font-weight: 600;
+  @apply mt-8 text-balance;
 }
 
 .prose :where(h2):not(:where([class~="not-prose"] *)) {
-  @apply text-2xl font-bold tracking-tight mt-8;
+  margin-bottom: 8px;
+  scroll-margin: 80px;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.019em;
+  font-weight: 600;
+  @apply mt-8;
 }
 
 .prose :where(h3):not(:where([class~="not-prose"] *)) {
-  @apply text-xl font-bold tracking-tight mt-6;
+  margin-bottom: 8px;
+  scroll-margin: 80px;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.017em;
+  font-weight: 600;
+  @apply mt-6;
+}
+
+.prose :where(h4):not(:where([class~="not-prose"] *)) {
+  margin-bottom: 8px;
+  scroll-margin: 80px;
+  font-size: 18px;
+  letter-spacing: -0.014em;
+  font-weight: 600;
+}
+
+.prose :where(h5):not(:where([class~="not-prose"] *)) {
+  margin-bottom: 8px;
+  scroll-margin: 80px;
+  font-size: 14px;
+  letter-spacing: -0.006em;
+  font-weight: 600;
+}
+
+.prose :where(h6):not(:where([class~="not-prose"] *)) {
+  margin-bottom: 8px;
+  scroll-margin: 80px;
+  font-size: 12px;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+
+/* Tighter heading stacking */
+.prose h2 + h3,
+.prose h3 + h4 {
+  margin-top: 16px;
+}
+
+.prose h4 + h5 {
+  margin-top: 12px;
+}
+
+/* Heading links are bold */
+.prose h1 a,
+.prose h2 a,
+.prose h3 a,
+.prose h4 a,
+.prose h5 a,
+.prose h6 a {
+  font-weight: 600;
+}
+
+/* Body links with specific styling */
+.prose p a,
+.prose ol a,
+.prose ul a,
+.prose table a {
+  font-weight: 400;
+  text-decoration-color: hsla(0, 0%, 51%, 0.5);
+  text-decoration-thickness: from-font;
+  text-underline-offset: 2px;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.prose p a:hover,
+.prose ol a:hover,
+.prose ul a:hover,
+.prose table a:hover {
+  text-decoration-color: #1e9de7;
+}
+
+/* List markers */
+.prose li::marker {
+  color: hsla(0, 0%, 51%, 0.8);
+}
+
+/* Inline code in paragraphs breaks long tokens */
+.prose p > code {
+  word-break: break-word;
+}
+
+/* Tables */
+.prose th {
+  line-height: 1.375;
 }
 
 /* Reduced paragraph font size and spacing */
@@ -162,15 +311,16 @@
 }
 
 .prose :where(a):not(:where([class~="not-prose"] *)) {
-  @apply text-accent underline hover:no-underline;
+  @apply text-accent underline decoration-gray-400/50 underline-offset-2 transition-colors duration-200 hover:decoration-accent;
 }
 
 .prose :where(code):not(:where([class~="not-prose"] *)) {
-  @apply before:content-none after:content-none bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+  @apply before:content-none after:content-none bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground;
 }
 
+/* Reduced pre styling since it's now handled by custom component */
 .prose :where(pre):not(:where([class~="not-prose"] *)) {
-  @apply bg-muted p-4 rounded-lg overflow-x-auto my-6;
+  @apply mt-4;
 }
 
 .prose :where(pre code):not(:where([class~="not-prose"] *)) {
@@ -192,8 +342,4 @@
 
 .prose :where(img):not(:where([class~="not-prose"] *)) {
   @apply rounded-lg my-8;
-}
-
-.prose :where(blockquote):not(:where([class~="not-prose"] *)) {
-  @apply border-l-4 border-accent pl-6 italic my-6;
 }

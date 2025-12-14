@@ -103,3 +103,14 @@ export async function getAllSlugs(): Promise<string[]> {
   const files = await getContentFiles()
   return files.map((file) => file.name.replace(".mdx", ""))
 }
+
+export async function getNextPost(currentSlug: string): Promise<PostMetadata | null> {
+  const posts = await getAllPosts()
+  const currentIndex = posts.findIndex((post) => post.slug === currentSlug)
+
+  if (currentIndex === -1 || currentIndex === posts.length - 1) {
+    return null
+  }
+
+  return posts[currentIndex + 1]
+}
