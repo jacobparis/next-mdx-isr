@@ -63,6 +63,7 @@ async function getFileContent(path: string): Promise<string> {
 }
 
 export async function getAllPosts(): Promise<PostMetadata[]> {
+  "use cache"
   cacheTag("posts-index")
 
   const files = await getContentFiles()
@@ -85,6 +86,7 @@ export async function getAllPosts(): Promise<PostMetadata[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
+"use cache"
   cacheTag(`post-${slug}`)
 
   try {
@@ -105,6 +107,8 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 }
 
 export async function getAllSlugs(): Promise<string[]> {
+    "use cache"
+  cacheTag("posts-index")
   const files = await getContentFiles()
   return files.map((file) => file.name.replace(".mdx", ""))
 }
