@@ -1,3 +1,5 @@
+"use cache"
+
 import { notFound } from "next/navigation"
 import { getPostBySlug, getNextPost, getAllSlugs } from "@/lib/mdx"
 import { Markdown } from "@/components/markdown"
@@ -6,9 +8,6 @@ import { SocialShare } from "@/components/social-share"
 import { NextPost } from "@/components/next-post"
 import type { Metadata } from "next"
 
-export const revalidate = 3600 * 24 * 30
-
-// Added generateMetadata for OG tags
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const post = await getPostBySlug(slug)
@@ -28,7 +27,6 @@ export default async function PostPage({
 }: {
   params: Promise<{ slug: string }>
 }) {
-  "use cache"
   const { slug } = await params
   const post = await getPostBySlug(slug)
 
@@ -48,4 +46,9 @@ export default async function PostPage({
       </div>
     </>
   )
+}
+
+export async function generateStaticParams() {
+  const slugs = await getAllSlugs()
+  return slugs.map((slug) => ({ slug }))
 }

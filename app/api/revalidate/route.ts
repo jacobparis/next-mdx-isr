@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache"
+import { revalidateTag } from "next/cache"
 import { type NextRequest, NextResponse } from "next/server"
 import { createHmac, timingSafeEqual } from "crypto"
 
@@ -59,10 +59,9 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const pathsToRevalidate = new Set<string>()
+    const tagsToRevalidate = new Set<string>()
     let shouldRevalidateIndex = false
 
-    // Process all commits to find content changes
     for (const commit of body.commits || []) {
       const allFiles = [...(commit.added || []), ...(commit.removed || []), ...(commit.modified || [])]
 
@@ -70,34 +69,32 @@ export async function POST(request: NextRequest) {
         const slug = getSlugFromPath(file)
         if (!slug) continue
 
-        // If file was added or removed, revalidate index
         if ((commit.added || []).includes(file) || (commit.removed || []).includes(file)) {
           shouldRevalidateIndex = true
         }
 
-        // For added or modified files, revalidate the specific post
         if ((commit.added || []).includes(file) || (commit.modified || []).includes(file)) {
-          pathsToRevalidate.add(`/post/${slug}`)
+          tagsToRevalidate.add(`post-${slug}`)
         }
       }
     }
 
     if (shouldRevalidateIndex) {
-      console.log("[v0] Revalidating index page: /")
-      revalidatePath("/")
+      console.log("[v0] Revalidating index with tag: posts-index")
+      revalidateTag("posts-index", "max")
     }
 
-    for (const path of pathsToRevalidate) {
-      console.log("[v0] Revalidating post page:", path)
-      revalidatePath(path)
+    for (const tag of tagsToRevalidate) {
+      console.log("[v0] Revalidating post with tag:", tag)
+      revalidateTag(tag, "max")
     }
 
     return NextResponse.json({
       revalidated: true,
       timestamp: new Date().toISOString(),
-      paths: {
+      tags: {
         index: shouldRevalidateIndex,
-        posts: Array.from(pathsToRevalidate),
+        posts: Array.from(tagsToRevalidate),
       },
     })
   } catch (error) {

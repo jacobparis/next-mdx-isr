@@ -1,5 +1,6 @@
 import matter from "gray-matter"
 import { Octokit } from "@octokit/rest"
+import { unstable_cacheTag as cacheTag } from "next/cache"
 
 if (!process.env.GITHUB_REPO_OWNER) {
   throw new Error("GITHUB_REPO_OWNER environment variable is required")
@@ -62,6 +63,8 @@ async function getFileContent(path: string): Promise<string> {
 }
 
 export async function getAllPosts(): Promise<PostMetadata[]> {
+  cacheTag("posts-index")
+
   const files = await getContentFiles()
 
   const posts = await Promise.all(
@@ -82,6 +85,8 @@ export async function getAllPosts(): Promise<PostMetadata[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
+  cacheTag(`post-${slug}`)
+
   try {
     const filePath = `${contentPath}/${slug}.mdx`
     const fileContent = await getFileContent(filePath)

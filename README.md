@@ -1,11 +1,11 @@
 # Next MDX Content Site
 
-A hyper-minimal blog built with Next.js, MDX, and Incremental Static Regeneration (ISR). Content is fetched directly from your GitHub repository.
+A hyper-minimal blog built with Next.js, MDX, and cache components. Content is fetched directly from your GitHub repository.
 
 ## Features
 
 - 📝 Write posts in MDX with React components
-- ⚡ Incremental Static Regeneration for instant updates
+- ⚡ Cache components for selective revalidation
 - 🎨 Custom MDX components (Callout, ImageGrid, etc.)
 - 🚀 Smart deployment (skip builds for content-only changes)
 - 🪝 Webhook for triggering revalidation with HMAC verification
@@ -56,7 +56,7 @@ Custom components work too!
 
 The project is configured to:
 - Skip full deploys when only content changes
-- Use ISR to update content automatically
+- Use cache components with selective revalidation
 - Trigger revalidation via webhook with HMAC verification
 - Fetch content directly from GitHub on each revalidation
 
@@ -108,7 +108,7 @@ Then use in MDX:
 
 1. **Content Storage**: All blog posts are stored in your GitHub repository's `content/` folder
 2. **Fetching**: The app uses Octokit to fetch MDX files directly from GitHub
-3. **ISR**: Pages regenerate every hour (`revalidate = 3600`)
+3. **Cache Components**: Pages use "use cache" directive with cache tags for selective revalidation
 4. **Webhook**: When you push content changes, GitHub triggers the webhook
-5. **Revalidation**: The webhook verifies the HMAC signature and triggers ISR to fetch fresh content
+5. **Revalidation**: The webhook verifies the HMAC signature and revalidates specific cache tags
 6. **No Redeploy**: Content-only changes don't trigger full Vercel deploys
