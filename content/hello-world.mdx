@@ -8,6 +8,8 @@ description: "Welcome to my minimal blog built with Next.js, MDX, and ISR."
 
 Welcome to my blog! This is a hyper-minimal blog built with **Next.js**, **MDX**, and **Incremental Static Regeneration**.
 
+When you update the MDX content, Vercel does not trigger a rebuild. Instead, GitHub sends a webhook to /api/revalidate to let the app know which posts were created, deleted, or modified. These are then revalidated so users see the fresh content without a redeploy.
+
 ## Features
 
 This blog includes:
