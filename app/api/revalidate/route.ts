@@ -1,4 +1,4 @@
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidatePath } from "next/cache"
 import { type NextRequest, NextResponse } from "next/server"
 import { createHmac, timingSafeEqual } from "crypto"
 
@@ -24,6 +24,11 @@ async function verifySignature(payload: string, signature: string | null, secret
   }
 }
 
+function getSlugFromPath(path: string): string | null {
+  const match = path.match(/^content\/(.+)\.mdx$/)
+  return match ? match[1] : null
+}
+
 // Webhook endpoint to trigger ISR revalidation
 export async function POST(request: NextRequest) {
   const secret = process.env.REVALIDATE_SECRET
@@ -43,19 +48,50 @@ export async function POST(request: NextRequest) {
     }
 
     const body = JSON.parse(rawBody)
-    console.log("[v0] Webhook received:", body)
 
-    // Revalidate homepage and all post pages
-    revalidatePath("/")
-    revalidatePath("/post/[slug]", "page")
-    revalidateTag("posts")
+    const pathsToRevalidate = new Set<string>()
+    let shouldRevalidateIndex = false
+
+    // Process all commits to find content changes
+    for (const commit of body.commits || []) {
+      const allFiles = [...(commit.added || []), ...(commit.removed || []), ...(commit.modified || [])]
+
+      for (const file of allFiles) {
+        const slug = getSlugFromPath(file)
+        if (!slug) continue
+
+        // If file was added or removed, revalidate index
+        if ((commit.added || []).includes(file) || (commit.removed || []).includes(file)) {
+          shouldRevalidateIndex = true
+        }
+
+        // For added or modified files, revalidate the specific post
+        if ((commit.added || []).includes(file) || (commit.modified || []).includes(file)) {
+          pathsToRevalidate.add(`/post/${slug}`)
+        }
+      }
+    }
+
+    // Revalidate index if posts were created/deleted/renamed
+    if (shouldRevalidateIndex) {
+      revalidatePath("/")
+    }
+
+    // Revalidate specific post pages
+    for (const path of pathsToRevalidate) {
+      revalidatePath(path)
+    }
 
     return NextResponse.json({
       revalidated: true,
       timestamp: new Date().toISOString(),
+      paths: {
+        index: shouldRevalidateIndex,
+        posts: Array.from(pathsToRevalidate),
+      },
     })
   } catch (error) {
-    console.error("[v0] Revalidation error:", error)
+    console.error("Revalidation error:", error)
     return NextResponse.json({ error: "Error revalidating" }, { status: 500 })
   }
 }
