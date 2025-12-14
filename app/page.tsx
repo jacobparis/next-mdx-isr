@@ -1,5 +1,3 @@
-"use cache"
-
 import Link from "next/link"
 import { getAllPosts } from "@/lib/mdx"
 import { Suspense } from "react"
