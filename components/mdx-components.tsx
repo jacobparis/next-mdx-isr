@@ -1,8 +1,6 @@
-"use client"
-
 import type React from "react"
 import type { ComponentPropsWithoutRef } from "react"
-import { Button } from "@/components/ui/button"
+import { CopyButton } from "@/components/copy-button"
 
 // Custom MDX components that can be used in blog posts
 export const MdxComponents = {
@@ -22,7 +20,9 @@ export const MdxComponents = {
     <h5 className="text-sm font-semibold mb-2 tracking-tight scroll-mt-20" {...props} />
   ),
   h6: (props: ComponentPropsWithoutRef<"h6">) => <h6 className="text-xs font-semibold mb-2 scroll-mt-20" {...props} />,
-  p: (props: ComponentPropsWithoutRef<"p">) => <p className="mt-4 text-base text-secondary leading-relaxed text-pretty" {...props} />,
+  p: (props: ComponentPropsWithoutRef<"p">) => (
+    <p className="mt-4 text-base text-secondary leading-relaxed text-pretty" {...props} />
+  ),
   a: (props: ComponentPropsWithoutRef<"a">) => (
     <a
       className="text-accent underline decoration-gray-400/50 underline-offset-2 transition-colors duration-200 hover:decoration-accent font-normal"
@@ -55,30 +55,7 @@ export const MdxComponents = {
       <div className="max-w-full rounded border border-border mt-3">
         <div className="flex items-center justify-between border-b border-border px-1">
           <div className="py-3 px-2 text-xs font-medium leading-none opacity-60 text-foreground">{language} </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="p-1 size-7"
-            aria-label="Copy snippet to clipboard"
-            onClick={(e) => {
-              const code = e.currentTarget.parentElement?.nextElementSibling?.textContent
-              if (code) {
-                navigator.clipboard.writeText(code)
-              }
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="none"
-              className="stroke-muted-foreground"
-              viewBox="0 0 16 16"
-            >
-              <path d="M5.5 2h-2a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-2"></path>
-              <path d="M6.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"></path>
-            </svg>
-          </Button>
+          <CopyButton />
         </div>
         <pre
           className="max-h-44 w-full overflow-auto whitespace-pre p-2 font-mono text-sm [&_code]:bg-transparent"
