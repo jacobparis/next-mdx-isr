@@ -1,6 +1,6 @@
 import matter from "gray-matter"
 import { Octokit } from "@octokit/rest"
-import { unstable_cacheTag as cacheTag } from "next/cache"
+import { cacheTag } from "next/cache"
 
 if (!process.env.GITHUB_REPO_OWNER) {
   throw new Error("GITHUB_REPO_OWNER environment variable is required")
