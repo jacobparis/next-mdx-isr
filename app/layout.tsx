@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} style={{ scrollbarGutter: 'stable'}}>
       <body className="font-sans antialiased flex flex-col min-h-screen">
         <header className="border-b border-border/50">
           <div className="max-w-4xl mx-auto px-6 py-4">
