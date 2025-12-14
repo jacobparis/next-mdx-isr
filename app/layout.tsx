@@ -5,7 +5,12 @@ import { Analytics } from "@vercel/analytics/next"
 import Link from "next/link"
 import "./globals.css"
 
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono, Geist as V0_Font_Geist, Geist_Mono as V0_Font_Geist_Mono, Source_Serif_4 as V0_Font_Source_Serif_4 } from 'next/font/google'
+
+// Initialize fonts
+const _geist = V0_Font_Geist({ subsets: ['latin'], weight: ["100","200","300","400","500","600","700","800","900"] })
+const _geistMono = V0_Font_Geist_Mono({ subsets: ['latin'], weight: ["100","200","300","400","500","600","700","800","900"] })
+const _sourceSerif_4 = V0_Font_Source_Serif_4({ subsets: ['latin'], weight: ["200","300","400","500","600","700","800","900"] })
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -29,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} style={{ scrollbarGutter: 'stable'}}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} style={{ scrollbarGutter: "stable" }}>
       <body className="font-sans antialiased flex flex-col min-h-screen">
         <header className="border-b border-border/50">
           <div className="max-w-4xl mx-auto px-6 py-4">
@@ -59,12 +64,21 @@ export default function RootLayout({
               </a>{" "}
               in{" "}
               <a
-                href="https://v0.app/ref/N52E9N"
+                href="https://v0.app/templates/next-mdx-content-site-jVoZMYqbqdZ?ref=N52E9N"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-accent hover:underline"
               >
                 v0
+              </a>
+              {" · "}
+              <a
+                href="https://github.com/jacobparis/next-mdx-content-template"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                GitHub
               </a>
             </p>
           </div>
