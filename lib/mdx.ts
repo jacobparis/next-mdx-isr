@@ -16,6 +16,7 @@ const octokit = new Octokit({
 const owner = process.env.GITHUB_REPO_OWNER
 const repo = process.env.GITHUB_REPO_NAME
 const contentPath = "content"
+const branch = "main"
 
 export interface PostMetadata {
   title: string
@@ -33,6 +34,7 @@ async function getContentFiles(): Promise<Array<{ name: string; path: string }>>
     owner,
     repo,
     path: contentPath,
+    ref: branch,
   })
 
   if (!Array.isArray(data)) {
@@ -49,6 +51,7 @@ async function getFileContent(path: string): Promise<string> {
     owner,
     repo,
     path,
+    ref: branch,
   })
 
   if ("content" in data && data.content) {

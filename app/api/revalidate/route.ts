@@ -49,6 +49,16 @@ export async function POST(request: NextRequest) {
 
     const body = JSON.parse(rawBody)
 
+    const ref = body.ref
+    if (ref !== "refs/heads/main") {
+      console.log("[v0] Ignoring push to branch:", ref)
+      return NextResponse.json({
+        revalidated: false,
+        message: "Only main branch pushes trigger revalidation",
+        branch: ref,
+      })
+    }
+
     const pathsToRevalidate = new Set<string>()
     let shouldRevalidateIndex = false
 
@@ -72,13 +82,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Revalidate index if posts were created/deleted/renamed
     if (shouldRevalidateIndex) {
+      console.log("[v0] Revalidating index page: /")
       revalidatePath("/")
     }
 
-    // Revalidate specific post pages
     for (const path of pathsToRevalidate) {
+      console.log("[v0] Revalidating post page:", path)
       revalidatePath(path)
     }
 
