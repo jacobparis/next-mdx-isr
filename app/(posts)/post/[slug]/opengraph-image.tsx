@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og"
 import { getPostBySlug } from "@/lib/mdx"
 
-export const runtime = "edge"
 export const alt = "Blog post"
 export const size = {
   width: 1200,
