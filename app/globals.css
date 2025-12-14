@@ -4,23 +4,33 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.15 0 0);
+  /* Brand orange accent color from screenshot */
+  --brand-orange: oklch(0.65 0.2 40);
+
+  /* Clean black and white base colors */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.1 0 0);
+
+  /* Muted text for descriptions */
+  --muted-foreground: oklch(0.45 0 0);
+
+  /* Subtle border */
+  --border: oklch(0.93 0 0);
+
+  /* Design tokens for consistency */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.1 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --popover-foreground: oklch(0.1 0 0);
+  --primary: oklch(0.1 0 0);
+  --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary-foreground: oklch(0.1 0 0);
   --muted: oklch(0.96 0 0);
-  --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: rgb(104, 104, 104);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0 0);
+  --destructive-foreground: oklch(1 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -52,7 +62,7 @@
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.22 0 0);
   --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.269 0 0);
+  --accent: var(--brand-orange);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
@@ -75,7 +85,6 @@
 }
 
 @theme inline {
-  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
   --font-sans: "Geist", "Geist Fallback";
   --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
@@ -125,11 +134,66 @@
   }
 }
 
-/* Prose styles for MDX content */
+/* Prose styles matching screenshot typography */
 .prose {
-  @apply text-foreground;
+  @apply text-foreground leading-relaxed;
+}
+
+/* Reduced all heading sizes and spacing */
+.prose :where(h1):not(:where([class~="not-prose"] *)) {
+  @apply text-4xl font-bold tracking-tight mb-4 mt-8 text-balance;
+}
+
+.prose :where(h2):not(:where([class~="not-prose"] *)) {
+  @apply text-2xl font-bold tracking-tight mb-3 mt-8;
+}
+
+.prose :where(h3):not(:where([class~="not-prose"] *)) {
+  @apply text-xl font-bold tracking-tight mb-2 mt-6;
+}
+
+/* Reduced paragraph font size and spacing */
+.prose :where(p):not(:where([class~="not-prose"] *)) {
+  @apply mb-4 text-base text-pretty;
+}
+
+.prose :where(strong):not(:where([class~="not-prose"] *)) {
+  @apply font-semibold text-foreground;
+}
+
+.prose :where(a):not(:where([class~="not-prose"] *)) {
+  @apply text-accent underline hover:no-underline;
 }
 
 .prose :where(code):not(:where([class~="not-prose"] *)) {
-  @apply before:content-none after:content-none;
+  @apply before:content-none after:content-none bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+.prose :where(pre):not(:where([class~="not-prose"] *)) {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto my-6;
+}
+
+.prose :where(pre code):not(:where([class~="not-prose"] *)) {
+  @apply bg-transparent p-0;
+}
+
+.prose :where(ul):not(:where([class~="not-prose"] *)) {
+  @apply list-disc pl-6 mb-6 space-y-2;
+}
+
+.prose :where(ol):not(:where([class~="not-prose"] *)) {
+  @apply list-decimal pl-6 mb-6 space-y-2;
+}
+
+/* Reduced list item font size */
+.prose :where(li):not(:where([class~="not-prose"] *)) {
+  @apply text-base;
+}
+
+.prose :where(img):not(:where([class~="not-prose"] *)) {
+  @apply rounded-lg my-8;
+}
+
+.prose :where(blockquote):not(:where([class~="not-prose"] *)) {
+  @apply border-l-4 border-accent pl-6 italic my-6;
 }

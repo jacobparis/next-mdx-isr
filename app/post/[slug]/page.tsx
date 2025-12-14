@@ -20,25 +20,22 @@ export default async function PostPage({
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border">
-        <div className="max-w-2xl mx-auto px-4 py-6">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            ← Back
-          </Link>
+      <header className="border-b border-border/50">
+        <div className="max-w-4xl mx-auto px-6 py-4">
+          <div className="flex items-center gap-3 text-xl">
+            <Link href="/" className="font-bold text-foreground hover:opacity-70 transition-opacity">
+              Blog
+            </Link>
+            <span className="text-muted-foreground">|</span>
+            <span className="font-bold text-accent">Engineering</span>
+          </div>
         </div>
       </header>
 
-      <article className="max-w-2xl mx-auto px-4 py-12">
-        <header className="mb-12">
-          <time className="text-sm text-muted-foreground">
-            {new Date(post.date).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </time>
-          <h1 className="text-4xl font-bold mt-2 mb-4 text-balance">{post.title}</h1>
-          <p className="text-lg text-muted-foreground text-pretty">{post.description}</p>
+      <article className="max-w-4xl mx-auto px-6 py-8">
+        <header className="mb-8">
+          <h1 className="text-4xl font-bold mb-3 text-balance leading-tight">{post.title}</h1>
+          <p className="text-lg text-muted-foreground text-pretty leading-relaxed">{post.description}</p>
         </header>
 
         <Markdown source={post.content} />
