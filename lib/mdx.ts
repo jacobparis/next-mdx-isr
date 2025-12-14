@@ -1,12 +1,20 @@
 import matter from "gray-matter"
 import { Octokit } from "@octokit/rest"
 
+if (!process.env.GITHUB_REPO_OWNER) {
+  throw new Error("GITHUB_REPO_OWNER environment variable is required")
+}
+
+if (!process.env.GITHUB_REPO_NAME) {
+  throw new Error("GITHUB_REPO_NAME environment variable is required")
+}
+
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 })
 
-const owner = process.env.GITHUB_REPO_OWNER!
-const repo = process.env.GITHUB_REPO_NAME!
+const owner = process.env.GITHUB_REPO_OWNER
+const repo = process.env.GITHUB_REPO_NAME
 const contentPath = "content"
 
 export interface PostMetadata {
