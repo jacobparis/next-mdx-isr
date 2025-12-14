@@ -58,7 +58,7 @@ export const MdxComponents = {
           <CopyButton />
         </div>
         <pre
-          className="max-h-44 w-full overflow-auto whitespace-pre p-2 font-mono text-sm [&_code]:bg-transparent"
+          className="mt-0 w-full overflow-auto whitespace-pre p-2 font-mono text-sm [&_code]:bg-transparent"
           {...props}
         >
           {children}
