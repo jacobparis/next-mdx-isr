@@ -2,9 +2,16 @@ import Link from "next/link"
 import { getAllPosts } from "@/lib/mdx"
 import { Suspense } from "react"
 import { FakePostCard } from "@/components/fake-post-card"
+import type { Metadata } from "next"
 
 // Revalidate every hour
 export const revalidate = 3600
+
+// Added metadata for OG tags
+export const metadata: Metadata = {
+  title: "Blog | Engineering",
+  description: "Technical blog covering engineering topics, architecture, and web development",
+}
 
 export default async function HomePage() {
   const posts = await getAllPosts()

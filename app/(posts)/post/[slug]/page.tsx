@@ -4,12 +4,28 @@ import { Markdown } from "@/components/markdown"
 import { PostHeader } from "@/components/post-header"
 import { SocialShare } from "@/components/social-share"
 import { NextPost } from "@/components/next-post"
+import type { Metadata } from "next"
 
 export const revalidate = 3600
 
 export async function generateStaticParams() {
   const slugs = await getAllSlugs()
   return slugs.map((slug) => ({ slug }))
+}
+
+// Added generateMetadata for OG tags
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
+
+  if (!post) {
+    return {}
+  }
+
+  return {
+    title: post.title,
+    description: post.description,
+  }
 }
 
 export default async function PostPage({
