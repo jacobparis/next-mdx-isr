@@ -11,7 +11,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <main className="max-w-4xl mx-auto px-6 py-8">
+      <main className="max-w-4xl mx-auto px-6 py-11">
         <div className="space-y-8">
           <Suspense fallback={null}>
             <FakePostCard />
@@ -19,7 +19,7 @@ export default async function HomePage() {
           {posts.map((post) => (
             <article key={post.slug} className="group">
               <Link href={`/post/${post.slug}`} className="block">
-                <h2 className="mt-3 group-hover:opacity-70 transition-opacity text-balance leading-tight font-semibold text-2xl">
+                <h2 className="mt-3 group-hover:opacity-70 transition-opacity text-balance leading-tight text-2xl font-medium">
                   {post.title}
                 </h2>
                 <time className="text-sm text-muted-foreground block mt-0">

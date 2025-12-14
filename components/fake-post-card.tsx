@@ -11,7 +11,7 @@ export async function FakePostCard() {
   return (
     <article className="group">
       <Link href="/fake-post" className="block">
-        <h2 className="mt-3 group-hover:opacity-70 transition-opacity text-balance leading-tight font-semibold text-2xl">
+        <h2 className="mt-3 group-hover:opacity-70 transition-opacity text-balance leading-tight text-2xl font-medium">
           v0 Preview Post
         </h2>
         <time className="text-sm text-muted-foreground block mt-0">
