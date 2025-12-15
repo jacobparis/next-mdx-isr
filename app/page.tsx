@@ -21,7 +21,13 @@ export default async function HomePage() {
 						<FakePostCard />
 					</Suspense>
 					{posts.map((post) => (
-						<Navigable.Root key={post.slug} className="group" href={`/post/${post.slug}`} asChild>
+						<Navigable.Root
+							key={post.slug}
+							prefetch="viewport"
+							className="group"
+							href={`/post/${post.slug}`}
+							asChild
+						>
 							<article>
 								<Navigable.Link>
 									<h2 className="mt-3 group-hover:opacity-70 transition-opacity text-balance leading-tight text-2xl font-medium">
