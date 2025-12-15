@@ -25,16 +25,18 @@ export function useNavigable() {
 export function NavigableRoot({
 	href,
 	children,
+	prefetch = "hover",
 	asChild,
 	...props
 }: {
 	href: string
 	children: React.ReactNode
 	asChild?: boolean
+	prefetch?: "hover" | "viewport"
 } & React.ComponentPropsWithoutRef<typeof Slot>) {
 	"use client"
 	const router = useRouter()
-	const [shouldPrefetch, setShouldPrefetch] = useState(false)
+	const [shouldPrefetch, setShouldPrefetch] = useState(prefetch === "viewport")
 
 	const Comp = asChild ? Slot : "div"
 
@@ -60,11 +62,7 @@ export function NavigableLink({
 } & Omit<React.ComponentProps<typeof Link>, "href" | "prefetch">) {
 	"use client"
 
-	const context = use(NavigableContext)
-	if (context === undefined) {
-		throw new Error("NavigableLink must be used within a Navigable component")
-	}
-	const { href, shouldPrefetch } = context
+	const { href, shouldPrefetch } = useNavigable()
 
 	return (
 		<Link
