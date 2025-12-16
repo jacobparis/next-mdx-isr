@@ -28,6 +28,7 @@ vercel-ignore-build.js # Smart build detection
 **What**: Edit MDX files in `content/`
 
 **What happens**:
+
 1. Push to GitHub main branch
 2. GitHub webhook fires → `/api/revalidate`
 3. Webhook validates HMAC signature
@@ -42,6 +43,7 @@ vercel-ignore-build.js # Smart build detection
 **What**: Edit code in `app/`, `components/`, `lib/`
 
 **What happens**:
+
 1. Push to GitHub
 2. Vercel detects non-content changes
 3. Full build and deployment
@@ -52,6 +54,7 @@ vercel-ignore-build.js # Smart build detection
 ## The Ignore Build Script
 
 `vercel-ignore-build.js` checks git diffs:
+
 - Only `content/` changed? → Exit 0 (skip build)
 - Anything else changed? → Exit 1 (run build)
 
@@ -63,36 +66,14 @@ Define in `components/mdx-components.tsx`:
 
 ```tsx
 export function CustomComponent({ children }) {
-  return <div className="custom">{children}</div>
+	return <div className="custom">{children}</div>
 }
 ```
 
 Use in any MDX file:
 
 ```mdx
-<CustomComponent>
-  Content here
-</CustomComponent>
+<CustomComponent>Content here</CustomComponent>
 ```
 
 **Important**: Component changes require full deployment since they're application code.
-
-## Navigable Component
-
-The `Navigable` component provides smart prefetching for better performance:
-
-```tsx
-<Navigable.Root href={`/post/${post.slug}`} prefetch="hover">
-  <Navigable.Link>
-    <h2>{post.title}</h2>
-  </Navigable.Link>
-</Navigable.Root>
-```
-
-**How it works**:
-- `prefetch="hover"` → Prefetch on mouse enter (default)
-- `prefetch="viewport"` → Prefetch when visible in viewport
-- Only prefetches when the condition is met, saving bandwidth
-- Makes navigation feel instant by loading pages before click
-
-This is especially useful for blog post lists where users hover over links before clicking.
