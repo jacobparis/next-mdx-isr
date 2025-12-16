@@ -23,6 +23,12 @@ export const metadata: Metadata = {
 	generator: "v0.app",
 }
 
+if (process.env.NEXT_RUNTIME === "nodejs" && process.env.NODE_ENV === "development") {
+	// Starts a mock server that intercepts GitHub API requests and returns content from the filesystem
+	const { server } = require("@/mocks")
+	server.listen()
+}
+
 export default function RootLayout({
 	children,
 }: Readonly<{

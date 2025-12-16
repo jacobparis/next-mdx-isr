@@ -1,0 +1,40 @@
+---
+title: "Mock Service Worker"
+date: "2025-12-16"
+description: "MSW lets you mock at the network layer, so your app code stays the same between development and production."
+---
+
+Mocking data for development usually requires modifying your application code. You end up with conditionals like `if (process.env.NODE_ENV === 'development')` scattered throughout your codebase, which means your app code is different between production and development.
+
+[Mock Service Worker](https://mswjs.io/) (MSW) solves this by mocking at the network layer. Your application code stays exactly the same—it makes the same fetch requests—but MSW intercepts those requests and returns mock responses instead.
+
+## How we use MSW
+
+In this template, we use MSW to intercept GitHub API requests and return files from the local file system instead.
+
+```ts
+import { setupServer } from "msw/node"
+import { githubHandlers } from "./github"
+
+export const server = setupServer(...githubHandlers)
+```
+
+When the app requests content from the GitHub API, MSW intercepts it and reads from your local `content/` directory:
+
+```ts
+http.get(`https://api.github.com/repos/:owner/:repo/contents/:path*`, async ({ params }) => {
+	const fullPath = getLocalPath(params.path)
+	const content = await readFile(fullPath)
+
+	return HttpResponse.json({
+		content: toBase64(content),
+		encoding: "base64",
+	})
+})
+```
+
+## Why this matters
+
+The same code that fetches MDX files from GitHub in production reads from your local file system in development. No environment checks, no conditional imports, no separate code paths.
+
+When you edit a file locally, refresh the page and see your changes immediately—the same way your users see content updates after a webhook revalidation in production.
