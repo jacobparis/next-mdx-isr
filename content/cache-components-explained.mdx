@@ -9,11 +9,13 @@ Cache components let you update pages without rebuilding your entire site using 
 ## The Problem
 
 Traditional static generation:
+
 - Build all pages at deploy time
 - New content requires full rebuild
 - Slow for large sites
 
 Traditional server rendering:
+
 - Generate pages on every request
 - Slower response times
 - Higher server load
@@ -24,17 +26,18 @@ Cache components use the `"use cache"` directive to cache function results with 
 
 ```tsx
 export default async function PostPage({ params }) {
-  "use cache"
-  const { slug } = await params
-  cacheTag(`post-${slug}`)
-  cacheLife("max")
-  
-  const post = await getPostBySlug(slug)
-  // ... render post
+	"use cache"
+	const { slug } = await params
+	cacheTag(`post-${slug}`)
+	cacheLife("max")
+
+	const post = await getPostBySlug(slug)
+	// ... render post
 }
 ```
 
 **How it works**:
+
 1. First request → Execute function, cache result with tag
 2. Subsequent requests → Serve cached version
 3. Cache persists until tag is invalidated
@@ -48,8 +51,8 @@ Each cached function can have one or more tags:
 
 ```tsx
 "use cache"
-cacheTag(`post-${slug}`)  // Tag this specific post
-cacheTag("posts-index")   // Tag the post list
+cacheTag(`post-${slug}`) // Tag this specific post
+cacheTag("posts-index") // Tag the post list
 ```
 
 Tags let you invalidate specific cached content without affecting others.
@@ -68,6 +71,7 @@ This immediately invalidates the cache and regenerates on the next request.
 ## Why It Matters Here
 
 When you push content:
+
 1. Webhook calls `revalidateTag('post-changed-slug', 'max')`
 2. Next request fetches fresh MDX from GitHub via Octokit
 3. New content appears immediately
@@ -80,7 +84,37 @@ You get static performance with dynamic freshness, and only the changed content 
 The `cacheLife()` function controls how long the cache persists:
 
 ```tsx
-cacheLife("max")  // Cache indefinitely until tag invalidation
+cacheLife("max") // Cache indefinitely until tag invalidation
 ```
 
 This is perfect for content that only changes when explicitly revalidated via webhook.
+
+## Enabling Cache Lifetimes
+
+To enable `cacheLife` settings, add `generateStaticParams` to your route. You only need to generate a single param:
+
+```tsx
+export async function generateStaticParams() {
+	const slug = await getFirstPostSlug()
+	if (!slug) return []
+
+	return [{ slug }]
+}
+```
+
+Without `generateStaticParams`, the build output shows no cache times:
+
+```
+├ ◐ /post/[slug]
+│ └ /post/[slug]
+```
+
+With a single `generateStaticParams`, the `cacheLife("max")` settings take effect:
+
+```
+├ ◐ /post/[slug]                                30d      1y
+│ ├ /post/[slug]                                30d      1y
+│ └ /post/architecture                          30d      1y
+```
+
+Without `generateStaticParams`, the cache lifetimes don't apply—even though PPR (`◐`) is enabled in both cases. Even though only one post is generated at build time, all posts benefit because the route itself is marked as statically generatable.
