@@ -1,11 +1,19 @@
 import { notFound } from "next/navigation"
-import { getPostBySlug, getNextPost } from "@/lib/mdx"
+import { getPostBySlug, getNextPost, getAllPosts, getFirstPostSlug } from "@/lib/mdx"
 import { Markdown } from "@/components/markdown"
 import { PostHeader } from "@/components/post-header"
 import { SocialShare } from "@/components/social-share"
 import { NextPost } from "@/components/next-post"
 import type { Metadata } from "next"
 import { cacheTag, cacheLife } from "next/cache"
+
+// Generate a single static param is all we need
+export async function generateStaticParams() {
+	const slug = await getFirstPostSlug()
+	if (!slug) return []
+
+	return [{ slug }]
+}
 
 export async function generateMetadata({
 	params,

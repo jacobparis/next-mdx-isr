@@ -1,0 +1,70 @@
+---
+title: "How ISR Works"
+date: "2025-12-12"
+description: "Understanding Incremental Static Regeneration in Next.js"
+---
+
+ISR (Incremental Static Regeneration) lets pages transition between dynamic and static at runtime.
+
+## The Key Insight
+
+With ISR, a page can:
+
+- Start as dynamic (server-rendered on first request)
+- Become static (cached after first render)
+- Return to dynamic (when cache expires or is invalidated)
+- Become static again (re-cached on next request)
+
+This cycle happens automatically without deploys.
+
+## Enabling ISR
+
+Export `generateStaticParams` to mark a route as statically generatable. You only need a single param:
+
+```tsx
+export async function generateStaticParams() {
+	const slug = await getFirstPostSlug()
+	if (!slug) return []
+
+	return [{ slug }]
+}
+```
+
+Without `generateStaticParams`, the build output shows no cache times:
+
+```
+├ ◐ /post/[slug]
+│ └ /post/[slug]
+```
+
+With `generateStaticParams`, pages can be cached:
+
+```
+├ ◐ /post/[slug]                                30d      1y
+│ ├ /post/[slug]                                30d      1y
+│ └ /post/architecture                          30d      1y
+```
+
+Even though only one post is generated at build time, all posts benefit because the route itself is marked as statically generatable.
+
+## Time-Based Revalidation
+
+Set a revalidation interval with `export const revalidate`:
+
+```tsx
+export const revalidate = 3600 // Revalidate every hour
+```
+
+After this time passes, the next request triggers a background regeneration while serving the stale cached version.
+
+## On-Demand Revalidation
+
+Revalidate immediately when content changes:
+
+```tsx
+import { revalidatePath } from "next/cache"
+
+revalidatePath(`/post/${slug}`)
+```
+
+This is useful for webhooks that fire when content is updated.

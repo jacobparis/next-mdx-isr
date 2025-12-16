@@ -88,33 +88,3 @@ cacheLife("max") // Cache indefinitely until tag invalidation
 ```
 
 This is perfect for content that only changes when explicitly revalidated via webhook.
-
-## Enabling Cache Lifetimes
-
-To enable `cacheLife` settings, add `generateStaticParams` to your route. You only need to generate a single param:
-
-```tsx
-export async function generateStaticParams() {
-	const slug = await getFirstPostSlug()
-	if (!slug) return []
-
-	return [{ slug }]
-}
-```
-
-Without `generateStaticParams`, the build output shows no cache times:
-
-```
-├ ◐ /post/[slug]
-│ └ /post/[slug]
-```
-
-With a single `generateStaticParams`, the `cacheLife("max")` settings take effect:
-
-```
-├ ◐ /post/[slug]                                30d      1y
-│ ├ /post/[slug]                                30d      1y
-│ └ /post/architecture                          30d      1y
-```
-
-Without `generateStaticParams`, the cache lifetimes don't apply—even though PPR (`◐`) is enabled in both cases. Even though only one post is generated at build time, all posts benefit because the route itself is marked as statically generatable.
