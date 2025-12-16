@@ -19,7 +19,14 @@ This cycle happens automatically without deploys.
 
 ## Enabling ISR
 
-Export `generateStaticParams` to mark a route as statically generatable. You only need a single param:
+Export `generateStaticParams` does two things
+
+1. Enables ISR for the route
+2. Returns a list of params that will be pre-compiled at build time.
+
+Number 1 is good, because static routes get downloaded and cached for instant navigations. Number 2 is bad here, because now our build time scales linearly with the size of our content library. Since we are ALREADY listening to webhooks to invalidate certain post URLs the moment they're updated, it will always be up to date and we don't want anything regenerating on build.
+
+So we need generateStaticParams to enable ISR, but we want it to return the minimum amount of data, which is one tag.
 
 ```tsx
 export async function generateStaticParams() {
@@ -45,26 +52,9 @@ With `generateStaticParams`, pages can be cached:
 │ └ /post/architecture                          30d      1y
 ```
 
-Even though only one post is generated at build time, all posts benefit because the route itself is marked as statically generatable.
-
-## Time-Based Revalidation
-
-Set a revalidation interval with `export const revalidate`:
-
-```tsx
-export const revalidate = 3600 // Revalidate every hour
-```
-
-After this time passes, the next request triggers a background regeneration while serving the stale cached version.
-
-## On-Demand Revalidation
-
-Revalidate immediately when content changes:
+The above 30d TTL and 1y SWR time is the maximum, and that's what you get when you don't do `export const revalidate = 60` in the ISR route. Since we're revalidating manually by purging the tag, there's no need for a time based revalidation.
 
 ```tsx
 import { revalidatePath } from "next/cache"
-
 revalidatePath(`/post/${slug}`)
 ```
-
-This is useful for webhooks that fire when content is updated.
